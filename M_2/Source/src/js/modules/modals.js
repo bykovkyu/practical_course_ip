@@ -8,7 +8,8 @@ const modals = () => {
             windows = document.querySelectorAll('[data-modal]'),
             scroll = calcScroll(),
             calcFormBtn = document.querySelector('.popup_calc_button'),
-            calcProfileBtn = document.querySelector('.popup_calc_profile_button');
+            calcProfileBtn = document.querySelector('.popup_calc_profile_button'),
+            gift = document.querySelector('.fixed-gift');
 
         let message = document.createElement('div');
         message.textContent = 'All fields are required';
@@ -19,10 +20,16 @@ const modals = () => {
             modal.style.display = 'none';
             document.body.style.overflow = '';
             document.body.style.marginRight = '0px';
+            if (gift) {
+                gift.style.right = '';
+            }
         };
 
         const hideAllModal = () => {
-            windows.forEach((item) => (item.style.display = 'none'));
+            windows.forEach((item) => {
+                item.style.display = 'none';
+                item.classList.add('animated', 'fadeIn');
+            });
         };
 
         const showModal = () => {
@@ -45,6 +52,9 @@ const modals = () => {
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
             document.body.style.marginRight = `${scroll}px`;
+            if (gift) {
+                gift.style.right = `${+getComputedStyle(gift).right.slice(0, -2) + scroll}px`;
+            }
         };
 
         trigger.forEach((item) =>
@@ -91,6 +101,10 @@ const modals = () => {
                 document.body.style.overflow = 'hidden';
                 let scroll = calcScroll();
                 document.body.style.marginRight = `${scroll}px`;
+                const gift = document.querySelector('.fixed-gift');
+                if (gift) {
+                    gift.style.right = `${+getComputedStyle(gift).right.slice(0, -2) + scroll}px`;
+                }
             }
         }, time);
     }
@@ -127,7 +141,7 @@ const modals = () => {
     bindModal('.button-design', '.popup-design', '.popup-design .popup-close');
     bindModal('.button-consultation', '.popup-consultation', '.popup-consultation .popup-close');
     bindModal('.fixed-gift ', '.popup-gift', '.popup-gift .popup-close', true);
-    showModalByTime('.popup-consultation', 60000);
+    showModalByTime('.popup-consultation', 6000);
     openByScroll('.fixed-gift');
 };
 
