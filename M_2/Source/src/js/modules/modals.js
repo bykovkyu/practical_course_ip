@@ -131,7 +131,7 @@ const modals = () => {
             );
             if (
                 !btnPressed &&
-                window.scrollY + document.documentElement.clientHeight >= scrollHeight // document.documentElement.scrollHeight вместо scrollHeight если не нужна поддержка старых браузеров
+                window.scrollY + document.documentElement.clientHeight + 1 >= scrollHeight // document.documentElement.scrollHeight вместо scrollHeight если не нужна поддержка старых браузеров
             ) {
                 document.querySelector(selector).click();
             }
@@ -141,7 +141,7 @@ const modals = () => {
     bindModal('.button-design', '.popup-design', '.popup-design .popup-close');
     bindModal('.button-consultation', '.popup-consultation', '.popup-consultation .popup-close');
     bindModal('.fixed-gift ', '.popup-gift', '.popup-gift .popup-close', true);
-    showModalByTime('.popup-consultation', 6000);
+    showModalByTime('.popup-consultation', 60000);
     openByScroll('.fixed-gift');
 };
 

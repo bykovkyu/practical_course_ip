@@ -96,11 +96,15 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_modals__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/modals */ "./src/js/modules/modals.js");
+/* harmony import */ var _modules_sliders__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/sliders */ "./src/js/modules/sliders.js");
+
 
 window.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_0__["default"])();
+  Object(_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])('.feedback-slider-item', '', '.main-prev-btn', '.main-next-btn');
+  Object(_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])('.main-slider-item', 'vertical');
 });
 
 /***/ }),
@@ -242,7 +246,7 @@ const modals = () => {
       let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight // document.body.scrollHeight - для поддержки старых браузеров
       );
 
-      if (!btnPressed && window.scrollY + document.documentElement.clientHeight >= scrollHeight // document.documentElement.scrollHeight вместо scrollHeight если не нужна поддержка старых браузеров
+      if (!btnPressed && window.scrollY + document.documentElement.clientHeight + 1 >= scrollHeight // document.documentElement.scrollHeight вместо scrollHeight если не нужна поддержка старых браузеров
       ) {
           document.querySelector(selector).click();
         }
@@ -252,11 +256,90 @@ const modals = () => {
   bindModal('.button-design', '.popup-design', '.popup-design .popup-close');
   bindModal('.button-consultation', '.popup-consultation', '.popup-consultation .popup-close');
   bindModal('.fixed-gift ', '.popup-gift', '.popup-gift .popup-close', true);
-  showModalByTime('.popup-consultation', 6000);
+  showModalByTime('.popup-consultation', 60000);
   openByScroll('.fixed-gift');
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);
+
+/***/ }),
+
+/***/ "./src/js/modules/sliders.js":
+/*!***********************************!*\
+  !*** ./src/js/modules/sliders.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const sliders = (slides, dir, prev, next) => {
+  let slideIndex = 1,
+      paused = false;
+  const items = document.querySelectorAll(slides);
+
+  function showSlides(n) {
+    if (n > items.length) {
+      slideIndex = 1;
+    }
+
+    if (n < 1) {
+      slideIndex = items.length;
+    }
+
+    items.forEach(item => {
+      item.classList.add('animated');
+      item.style.display = 'none';
+    });
+    items[slideIndex - 1].style.display = 'block';
+  }
+
+  showSlides(slideIndex);
+
+  function plusSlides(n) {
+    showSlides(slideIndex += n);
+  }
+
+  try {
+    const prevBtn = document.querySelector(prev),
+          nextBtn = document.querySelector(next);
+    prevBtn.addEventListener('click', () => {
+      plusSlides(-1);
+      items[slideIndex - 1].classList.remove('slideInLeft');
+      items[slideIndex - 1].classList.add('slideInRight');
+    });
+    nextBtn.addEventListener('click', () => {
+      plusSlides(1);
+      items[slideIndex - 1].classList.remove('slideInRight');
+      items[slideIndex - 1].classList.add('slideInLeft');
+    });
+  } catch (e) {
+    console.log(e);
+  }
+
+  function activateAnimation() {
+    if (dir === 'vertical') {
+      paused = setInterval(() => {
+        plusSlides(1);
+        items[slideIndex - 1].classList.add('slideInDown');
+      }, 5000);
+    } else {
+      paused = setInterval(() => {
+        plusSlides(1);
+        items[slideIndex - 1].classList.remove('slideInRight');
+        items[slideIndex - 1].classList.add('slideInLeft');
+      }, 5000);
+    }
+  }
+
+  activateAnimation();
+  items[0].parentNode.addEventListener('mouseenter', () => {
+    clearInterval(paused);
+  });
+  items[0].parentNode.addEventListener('mouseleave', activateAnimation);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (sliders);
 
 /***/ })
 
