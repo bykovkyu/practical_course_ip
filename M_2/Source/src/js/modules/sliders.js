@@ -43,7 +43,7 @@ const sliders = (slides, dir, prev, next) => {
             items[slideIndex - 1].classList.add('slideInLeft');
         });
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 
     function activateAnimation() {

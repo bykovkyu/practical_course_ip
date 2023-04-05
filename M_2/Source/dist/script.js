@@ -313,8 +313,7 @@ const sliders = (slides, dir, prev, next) => {
       items[slideIndex - 1].classList.remove('slideInRight');
       items[slideIndex - 1].classList.add('slideInLeft');
     });
-  } catch (e) {
-    console.log(e);
+  } catch (e) {// console.log(e);
   }
 
   function activateAnimation() {
