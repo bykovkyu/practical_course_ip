@@ -1844,16 +1844,97 @@ module.exports = g;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _modules_slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/slider */ "./src/js/modules/slider.js");
-/* harmony import */ var _modules_playVideo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/playVideo */ "./src/js/modules/playVideo.js");
+/* harmony import */ var _modules_slider_slider_main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/slider/slider-main */ "./src/js/modules/slider/slider-main.js");
+/* harmony import */ var _modules_slider_slider_mini__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/slider/slider-mini */ "./src/js/modules/slider/slider-mini.js");
+/* harmony import */ var _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/playVideo */ "./src/js/modules/playVideo.js");
+/* harmony import */ var _modules_difference__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/difference */ "./src/js/modules/difference.js");
+
+
 
 
 window.addEventListener('DOMContentLoaded', () => {
-  const slider = new _modules_slider__WEBPACK_IMPORTED_MODULE_0__["default"]('.page', '.next');
-  slider.render();
-  const player = new _modules_playVideo__WEBPACK_IMPORTED_MODULE_1__["default"]('.showup .play', '.overlay');
-  player.init();
+  const mainSlider = new _modules_slider_slider_main__WEBPACK_IMPORTED_MODULE_0__["default"]({
+    btns: '.next',
+    container: '.page'
+  });
+  mainSlider.render();
+  const showUpSlider = new _modules_slider_slider_mini__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    container: '.showup__content-slider',
+    prev: '.showup__prev',
+    next: '.showup__next',
+    activeClass: 'card-active',
+    animate: true
+  });
+  showUpSlider.init();
+  const modulesSlider = new _modules_slider_slider_mini__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    container: '.modules__content-slider',
+    prev: '.modules__info-btns .slick-prev',
+    next: '.modules__info-btns .slick-next',
+    activeClass: 'card-active',
+    animate: true,
+    autoplay: true
+  });
+  modulesSlider.init();
+  const feedSlider = new _modules_slider_slider_mini__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    container: '.feed__slider',
+    prev: '.feed__slider .slick-prev',
+    next: '.feed__slider .slick-next',
+    activeClass: 'feed__item-active'
+  });
+  feedSlider.init();
+  new _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__["default"]('.showup .play', '.overlay').init();
+  new _modules_difference__WEBPACK_IMPORTED_MODULE_3__["default"]('.officerold', '.officernew', '.officer__card-item').init();
 });
+
+/***/ }),
+
+/***/ "./src/js/modules/difference.js":
+/*!**************************************!*\
+  !*** ./src/js/modules/difference.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Difference; });
+class Difference {
+  constructor(oldOfficer, newOfficer, items) {
+    this.oldOfficer = document.querySelector(oldOfficer);
+    this.newOfficer = document.querySelector(newOfficer);
+    this.oldItems = this.oldOfficer.querySelectorAll(items);
+    this.newItems = this.newOfficer.querySelectorAll(items);
+    this.oldCounter = 0;
+    this.newCounter = 0;
+  }
+
+  bindTriggers(container, items, counter) {
+    container.querySelector('.plus').addEventListener('click', () => {
+      items[counter++].style.display = 'flex';
+
+      if (counter === items.length - 1) {
+        items[counter].remove();
+      }
+    });
+  }
+
+  hideItems(items) {
+    items.forEach((item, i, arr) => {
+      if (i !== arr.length - 1) {
+        item.style.display = 'none';
+        item.classList.add('animated', 'fadeIn');
+      }
+    });
+  }
+
+  init() {
+    this.hideItems(this.oldItems);
+    this.hideItems(this.newItems);
+    this.bindTriggers(this.oldOfficer, this.oldItems, this.oldCounter);
+    this.bindTriggers(this.newOfficer, this.newItems, this.newCounter);
+  }
+
+}
 
 /***/ }),
 
@@ -1916,27 +1997,22 @@ class VideoPlayer {
 
 /***/ }),
 
-/***/ "./src/js/modules/slider.js":
-/*!**********************************!*\
-  !*** ./src/js/modules/slider.js ***!
-  \**********************************/
+/***/ "./src/js/modules/slider/slider-main.js":
+/*!**********************************************!*\
+  !*** ./src/js/modules/slider/slider-main.js ***!
+  \**********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Slider; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return MainSlider; });
 /* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.iterator */ "./node_modules/core-js/modules/web.dom-collections.iterator.js");
 /* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _slider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./slider */ "./src/js/modules/slider/slider.js");
 
-class Slider {
-  constructor(page, btns) {
-    this.page = document.querySelector(page);
-    this.slides = [...this.page.children];
-    this.btns = document.querySelectorAll(btns);
-    this.slideIndex = 1;
-  }
 
+class MainSlider extends _slider__WEBPACK_IMPORTED_MODULE_1__["default"] {
   showSLides(n) {
     if (n > this.slides.length) {
       this.slideIndex = 1;
@@ -1960,7 +2036,7 @@ class Slider {
       }
     } catch (e) {}
 
-    this.slides.forEach(slide => {
+    [...this.slides].forEach(slide => {
       slide.style.display = 'none';
     });
     this.slides[this.slideIndex - 1].style.display = 'block';
@@ -1986,6 +2062,129 @@ class Slider {
       });
     });
     this.showSLides(this.slideIndex);
+  }
+
+}
+
+/***/ }),
+
+/***/ "./src/js/modules/slider/slider-mini.js":
+/*!**********************************************!*\
+  !*** ./src/js/modules/slider/slider-mini.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return MiniSlider; });
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.iterator */ "./node_modules/core-js/modules/web.dom-collections.iterator.js");
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _slider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./slider */ "./src/js/modules/slider/slider.js");
+
+
+class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_1__["default"] {
+  constructor(value) {
+    super(value);
+    this.slideCount = [...this.slides].filter(child => {
+      return child.tagName !== 'BUTTON';
+    }).length;
+  }
+
+  decorizeSlides() {
+    [...this.slides].forEach(slide => {
+      slide.classList.remove(this.activeClass);
+
+      if (this.animate) {
+        slide.querySelector('.card__title').style.opacity = '0.4';
+        slide.querySelector('.card__controls-arrow').style.opacity = '0';
+      }
+    });
+    this.slides[0].classList.add(this.activeClass);
+
+    if (this.animate) {
+      this.slides[0].querySelector('.card__title').style.opacity = '1';
+      this.slides[0].querySelector('.card__controls-arrow').style.opacity = '1';
+    }
+  }
+
+  nextSlide() {
+    this.slides[this.slideCount - 1].insertAdjacentElement('afterend', this.slides[0]);
+    this.decorizeSlides();
+  }
+
+  bindTriggers() {
+    this.next.addEventListener('click', () => this.nextSlide());
+    this.prev.addEventListener('click', () => {
+      this.container.insertBefore(this.slides[this.slideCount - 1], this.slides[0]);
+      this.decorizeSlides();
+    });
+
+    if (this.autoplay) {
+      [this.container, this.next, this.prev].forEach(item => {
+        item.addEventListener('mouseenter', () => {
+          this.suspended = true;
+        });
+      });
+      [this.container, this.next, this.prev].forEach(item => {
+        item.addEventListener('mouseleave', () => {
+          this.suspended = false;
+        });
+      });
+    }
+  }
+
+  init() {
+    this.container.style.cssText = `
+            display: flex;
+            flex-wrap: wrap;
+            overflow: hidden;
+            align-items: flex-start;
+        `;
+
+    if (this.autoplay) {
+      setInterval(() => {
+        if (!this.suspended) this.nextSlide();
+      }, 5000);
+    }
+
+    this.bindTriggers();
+    this.decorizeSlides();
+  }
+
+}
+
+/***/ }),
+
+/***/ "./src/js/modules/slider/slider.js":
+/*!*****************************************!*\
+  !*** ./src/js/modules/slider/slider.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Slider; });
+class Slider {
+  constructor({
+    container = null,
+    btns = null,
+    next = null,
+    prev = null,
+    activeClass = '',
+    animate,
+    autoplay
+  } = {}) {
+    this.container = document.querySelector(container);
+    this.slides = this.container.children;
+    this.btns = document.querySelectorAll(btns);
+    this.prev = document.querySelector(prev);
+    this.next = document.querySelector(next);
+    this.activeClass = activeClass;
+    this.animate = animate;
+    this.autoplay = autoplay;
+    this.slideIndex = 1; // console.log('Slider', this.page, this.slides, this.btns, this.slideIndex);
   }
 
 }
