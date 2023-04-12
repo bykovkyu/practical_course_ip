@@ -5,8 +5,16 @@ import Difference from './modules/difference';
 import Form from './modules/forms';
 
 window.addEventListener('DOMContentLoaded', () => {
-    const mainSlider = new MainSlider({ btns: '.next', container: '.page' });
-    mainSlider.render();
+    const mainPageSlider = new MainSlider({ btns: '.next', container: '.page' });
+    mainPageSlider.render();
+
+    const modulePageSlider = new MainSlider({
+        container: '.moduleapp',
+        btns: '.next',
+        next: '.nextmodule',
+        prev: '.prevmodule',
+    });
+    modulePageSlider.render();
 
     const showUpSlider = new MiniSlider({
         container: '.showup__content-slider',
@@ -39,6 +47,7 @@ window.addEventListener('DOMContentLoaded', () => {
     feedSlider.init();
 
     new VideoPlayer('.showup .play', '.overlay').init();
+    new VideoPlayer('.module__video-item .play', '.overlay').init();
 
     new Difference('.officerold', '.officernew', '.officer__card-item').init();
 

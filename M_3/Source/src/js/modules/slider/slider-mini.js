@@ -3,9 +3,11 @@ import Slider from './slider';
 export default class MiniSlider extends Slider {
     constructor(value) {
         super(value);
-        this.slideCount = [...this.slides].filter((child) => {
-            return child.tagName !== 'BUTTON';
-        }).length;
+        try {
+            this.slideCount = [...this.slides].filter((child) => {
+                return child.tagName !== 'BUTTON';
+            }).length;
+        } catch (e) {}
     }
 
     decorizeSlides() {
@@ -54,20 +56,22 @@ export default class MiniSlider extends Slider {
     }
 
     init() {
-        this.container.style.cssText = `
+        try {
+            this.container.style.cssText = `
             display: flex;
             flex-wrap: wrap;
             overflow: hidden;
             align-items: flex-start;
         `;
 
-        if (this.autoplay) {
-            setInterval(() => {
-                if (!this.suspended) this.nextSlide();
-            }, 5000);
-        }
+            if (this.autoplay) {
+                setInterval(() => {
+                    if (!this.suspended) this.nextSlide();
+                }, 5000);
+            }
 
-        this.bindTriggers();
-        this.decorizeSlides();
+            this.bindTriggers();
+            this.decorizeSlides();
+        } catch (e) {}
     }
 }
