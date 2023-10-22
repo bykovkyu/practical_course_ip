@@ -46,3 +46,29 @@ $('button')
 // );
 
 // $('.dropdown-toggle').dropdown();
+
+$('#trigger').click(() =>
+    $('#trigger').createModal({
+        text: {
+            title: 'Modal title',
+            body: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, alias!',
+        },
+        btns: {
+            count: 3,
+            settings: [
+                ['Close', ['btn-danger', 'mr-10'], true],
+                [
+                    'Save changes',
+                    ['btn-success'],
+                    false,
+                    () => {
+                        alert('Data saved');
+                    },
+                ],
+                ['Another btn', ['btn-warning', 'ml-10'], false, () => alert('Hello world!')],
+            ],
+        },
+    })
+);
+
+$().get('https://jsonplaceholder.typicode.com/todos/1', 'json').then(console.log);

@@ -6,7 +6,7 @@ $.prototype.addClass = function (...classNames) {
             this[i].classList.add(...classNames);
         }
     }
-    return this.init;
+    return this;
 };
 
 $.prototype.removeClass = function (...classNames) {
